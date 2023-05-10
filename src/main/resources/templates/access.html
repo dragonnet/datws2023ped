@@ -16,25 +16,25 @@
 	<div class="container">
 		<main>
 			<div class="py-5 text-center">
-				<img width="200px" height="200px" src="https://pharmalat.net/wp-content/uploads/2019/06/logo.png">
-				<p class="lead">Iniciar Sesión.</p>
+				<img width="100px" height="100px" src="https://pharmalat.net/wp-content/uploads/2019/06/logo.png">
+				<p class="lead">Validación de Acceso.</p>
 			</div>
 		
 			<div class="container py-4 text-center">
-				<div class="card border-primary">
-					<div class="card-header">Por favor inicie sesión</div>
+				<div class="card border-success">
+					<div class="card-header">Por favor valide su acceso</div>
 					<div class="card-body">
-						<form th:action="@{/login}" method="post">
+						<form th:object="${access}" th:action="@{/main}" method="post">
 							<div class="form-group col-sm-12">
-								<input class="form-control" type="text" name="username" id="username" value="" placeholder="Usuario"
+								<input th:field="*{username}" class="form-control" type="text" name="username" id="username" value="" placeholder="Usuario"
 									autofocus required>
 							</div>
 							<div class="form-group col-sm-12">
-								<input class="form-control" type="password" name="password" id="password" value=""
+								<input th:field="*{password}" class="form-control" type="password" name="password" id="password" value=""
 									placeholder="Password" required>
 							</div>
 							<div class="form-group col-sm-12">
-								<input class="btn btn-lg btn-primary btn-block" type="submit" name="" value="Iniciar Sesión"
+								<input class="btn btn-lg btn-success btn-block" type="submit" name="" value="Validar Acceso"
 									placeholder="">
 							</div>
 						</form>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Prototipo | Sistema de Pedidos</title>
+
+	<!-- Google Font: Source Sans Pro -->
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+	<!-- Font Awesome -->
+	<link th:href="@{/plugins/fontawesome-free/css/all.min.css}" rel="stylesheet" />
+	<!-- DataTables -->
+	<link th:href="@{/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}" rel="stylesheet" />
+	<link th:href="@{/plugins/datatables-responsive/css/responsive.bootstrap4.min.css}" rel="stylesheet" />
+	<link th:href="@{/plugins/datatables-buttons/css/buttons.bootstrap4.min.css}" rel="stylesheet" />
+	<!-- Theme style -->
+	<link th:href="@{/dist/css/adminlte.min.css}" rel="stylesheet" />
+</head>
+
+<body class="hold-transition sidebar-mini">
+	<div class="wrapper">
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1>Información de Items</h1>
+						</div>
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+							</ol>
+						</div>
+					</div>
+				</div><!-- /.container-fluid -->
+			</section>
+
+			<!-- Main content -->
+			<section class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header">
+									<h3 class="card-title"></h3>
+								</div>
+								<!-- /.card-header -->
+								<div class="card-body">
+									<table id="example1" class="table table-bordered table-striped">
+										<thead>
+											<tr>
+												<th>Seleccionar</th>
+												<th>ID</th>
+												<th>No.</th>
+												<th>Descripcion</th>
+																								<th>Descripcion</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="item: ${items}">
+												<td><a th:href="@{/pedido/{customerid}/{nopedido}/{item}/{idusuario}(customerid = ${customerid}, nopedido= ${nopedido}, item = ${item.no}, idusuario = ${idusuario})}"><button
+															class="btn btn-success" type="button">Agregar</button></a>
+												</td>
+												<td th:text="${item.timestamp}">0000003</td>
+												<td th:text="${item.no}">VIRGINIA HERRERA SANTIZO</td>
+												<td th:text="${item.description}"></td>
+												<th>Descripcion</th>
+											</tr>
+										</tbody>
+										<tfoot>
+											<tr>
+												<th>Seleccionar</th>
+												<th>ID</th>
+												<th>No.</th>
+												<th>Descripcion</th>
+												<th>Descripcion</th>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+								<!-- /.card-body -->
+							</div>
+							<!-- /.card -->
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.container-fluid -->
+			</section>
+			<!-- /.content -->
+		</div>
+
+	</div>
+	<!-- ./wrapper -->
+
+	<!-- jQuery -->
+	<script src="../../plugins/jquery/jquery.min.js"></script>
+	<!-- Bootstrap 4 -->
+	<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- DataTables  & Plugins -->
+	<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+	<script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+	<script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+	<script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+	<script src="../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+	<script src="../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+	<script src="../../plugins/jszip/jszip.min.js"></script>
+	<script src="../../plugins/pdfmake/pdfmake.min.js"></script>
+	<script src="../../plugins/pdfmake/vfs_fonts.js"></script>
+	<script src="../../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+	<script src="../../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+	<script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="../../dist/js/adminlte.min.js"></script>
+	<!-- AdminLTE for demo purposes -->
+
+	<!-- Page specific script -->
+	<script>
+		$(function () {
+			$("#example1").DataTable({
+				"responsive": true, "lengthChange": false, "autoWidth": false
+			}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+			$('#example2').DataTable({
+				"paging": true,
+				"lengthChange": false,
+				"searching": false,
+				"ordering": true,
+				"info": true,
+				"autoWidth": false,
+				"responsive": true,
+			});
+		});
+	</script>
+</body>
+
+</html>
