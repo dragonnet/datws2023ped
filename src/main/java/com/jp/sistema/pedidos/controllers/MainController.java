@@ -1,10 +1,12 @@
 package com.jp.sistema.pedidos.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,7 @@ import com.jp.sistema.pedidos.model.dao.INoSeriesLine;
 import com.jp.sistema.pedidos.model.dao.ISalesPerson;
 import com.jp.sistema.pedidos.model.entity.Access;
 import com.jp.sistema.pedidos.model.entity.Customer;
+import com.jp.sistema.pedidos.model.entity.CustomerNew;
 import com.jp.sistema.pedidos.model.entity.DetaPedido;
 import com.jp.sistema.pedidos.model.entity.EncaPedido;
 import com.jp.sistema.pedidos.model.entity.Item;
@@ -28,6 +31,8 @@ import com.jp.sistema.pedidos.model.entity.NoSeries;
 import com.jp.sistema.pedidos.model.entity.NoSeriesLines;
 import com.jp.sistema.pedidos.model.entity.Pedidos;
 import com.jp.sistema.pedidos.model.entity.SalesPerson;
+import com.jp.sistema.pedidos.model.entity.customer.Value;
+import com.jp.sistema.pedidos.proxys.ICustomerProxys;
 
 @Controller
 public class MainController {
@@ -50,15 +55,21 @@ public class MainController {
 	@Autowired
 	private IDetaPedido detalleDao;
 	
+	@Autowired
+	private ICustomerProxys customerProxy;
+	
 	private List<Pedidos> listPedidos =new ArrayList<>();
+	
+	private List<CustomerNew> listCustomerNew = new ArrayList<CustomerNew>();
 
 	@GetMapping(value = "/main/{idusuario}")
 	public String main(@PathVariable("idusuario") String idUsuario, Model model) {
+
 		SalesPerson person = salesPersonDao.searchByOne(idUsuario);
 		model.addAttribute("idusuario", person.getCode().trim());
 		model.addAttribute("usuario", person.getName().trim());
 		model.addAttribute("titulo", "");
-		model.addAttribute("customers", customerDao.findAll());
+		model.addAttribute("customers", listCustomerNew);
 		return "main";
 	}
 	
@@ -69,7 +80,7 @@ public class MainController {
 			model.addAttribute("idusuario", person.getCode().trim());
 			model.addAttribute("usuario", person.getName().trim());
 			model.addAttribute("titulo", "");
-			model.addAttribute("customers", customerDao.findAll());
+			model.addAttribute("customers", listCustomerNew);
 			return "main";
 		}else {
 			flash.addFlashAttribute("error", "No es posible validar su acceso, por favor vuela a intentarlo.");
@@ -79,10 +90,29 @@ public class MainController {
 	
 	@GetMapping(value = {"/index", "/"})
 	public String access(Model model) {
+		listCustomerNew.clear();
+		ResponseEntity<com.jp.sistema.pedidos.model.entity.customer.Customer> getCustomer = null;
+		try {
+			getCustomer = customerProxy.getCustomers();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(getCustomer != null) {
+			for (Value value : getCustomer.getBody().getValue()) {
+				CustomerNew customer = new CustomerNew();
+				customer.setNo(value.getNo());
+				customer.setName(value.getName());
+				customer.setCity(value.getCity());
+				customer.setTimestamp(value.getIdentif1());
+				listCustomerNew.add(customer);
+			}
+		}
+		
 		Access access = new Access();
 		model.addAttribute("access", access);
 		model.addAttribute("titulo", "");
-		model.addAttribute("customers", customerDao.findAll());
 		return "access";
 	}
 	

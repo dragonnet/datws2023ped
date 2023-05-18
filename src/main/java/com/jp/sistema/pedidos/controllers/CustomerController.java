@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jp.sistema.pedidos.model.dao.ICustomerDao;
+import com.jp.sistema.pedidos.model.dao.IEncaPedido;
 import com.jp.sistema.pedidos.model.dao.IItemDao;
 import com.jp.sistema.pedidos.model.dao.ISalesPerson;
 import com.jp.sistema.pedidos.model.entity.Customer;
+import com.jp.sistema.pedidos.model.entity.EncaPedido;
 import com.jp.sistema.pedidos.model.entity.Item;
 import com.jp.sistema.pedidos.model.entity.SalesPerson;
 
@@ -25,6 +27,9 @@ public class CustomerController {
 	
 	@Autowired
 	private ISalesPerson salesPersonDao;
+	
+	@Autowired
+	private IEncaPedido encaPedidoDao;
 
 	@GetMapping(value = "/listCustomer", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Customer> listCustomer() {
@@ -39,6 +44,11 @@ public class CustomerController {
 	@GetMapping(value = "/listSalesPerson", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<SalesPerson> listSalesPerson() {
 		return salesPersonDao.findAll();
+	}
+	
+	@GetMapping(value = "/listHeader", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<EncaPedido> listHeader() {
+		return encaPedidoDao.findAll();
 	}
 	
 }
