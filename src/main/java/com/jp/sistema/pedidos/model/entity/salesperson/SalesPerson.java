@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import lombok.Data;
 
 @Data
-public class SalePerson {
+public class SalesPerson {
     public String context;
     public ArrayList<Value> value;
 }

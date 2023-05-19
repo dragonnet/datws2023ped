@@ -32,10 +32,12 @@ import com.jp.sistema.pedidos.model.entity.NoSeries;
 import com.jp.sistema.pedidos.model.entity.NoSeriesLines;
 import com.jp.sistema.pedidos.model.entity.Pedidos;
 import com.jp.sistema.pedidos.model.entity.SalesPerson;
+import com.jp.sistema.pedidos.model.entity.SalesPersonNew;
 import com.jp.sistema.pedidos.model.entity.customer.Value;
 import com.jp.sistema.pedidos.model.entity.products.Products;
 import com.jp.sistema.pedidos.proxys.ICustomerProxy;
 import com.jp.sistema.pedidos.proxys.IProductProxy;
+import com.jp.sistema.pedidos.proxys.ISalesPersonProxy;
 
 @Controller
 public class MainController {
@@ -64,10 +66,14 @@ public class MainController {
 	@Autowired
 	private IProductProxy productProxy;
 	
+	@Autowired
+	private ISalesPersonProxy salesPersonProxy;
+	
 	private List<Pedidos> listPedidos =new ArrayList<>();
 	
 	private List<CustomerNew> listCustomerNew = new ArrayList<CustomerNew>();
 	private List<ItemNew> listItemNew = new ArrayList<ItemNew>();
+	private List<SalesPersonNew> listSalesPersonNew = new ArrayList<SalesPersonNew>();
 
 	@GetMapping(value = "/main/{idusuario}")
 	public String main(@PathVariable("idusuario") String idUsuario, Model model) {
@@ -98,6 +104,7 @@ public class MainController {
 	@GetMapping(value = {"/index", "/"})
 	public String access(Model model) {
 		listCustomerNew.clear();
+		listSalesPersonNew.clear();
 		ResponseEntity<com.jp.sistema.pedidos.model.entity.customer.Customer> getCustomer = null;
 		try {
 			getCustomer = customerProxy.getCustomers();
@@ -105,6 +112,16 @@ public class MainController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		ResponseEntity<com.jp.sistema.pedidos.model.entity.salesperson.SalesPerson> getSalesPerson = null;
+		try {
+			getSalesPerson = salesPersonProxy.getSalesPerson();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		if(getCustomer != null) {
 			for (Value value : getCustomer.getBody().getValue()) {
