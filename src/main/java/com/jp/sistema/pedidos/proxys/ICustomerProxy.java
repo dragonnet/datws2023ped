@@ -6,6 +6,6 @@ import org.springframework.http.ResponseEntity;
 
 import com.jp.sistema.pedidos.model.entity.customer.Customer;
 
-public interface ICustomerProxys {
+public interface ICustomerProxy {
 	ResponseEntity<Customer> getCustomers() throws IOException;
 }

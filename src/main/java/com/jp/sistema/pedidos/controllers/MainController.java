@@ -27,12 +27,15 @@ import com.jp.sistema.pedidos.model.entity.CustomerNew;
 import com.jp.sistema.pedidos.model.entity.DetaPedido;
 import com.jp.sistema.pedidos.model.entity.EncaPedido;
 import com.jp.sistema.pedidos.model.entity.Item;
+import com.jp.sistema.pedidos.model.entity.ItemNew;
 import com.jp.sistema.pedidos.model.entity.NoSeries;
 import com.jp.sistema.pedidos.model.entity.NoSeriesLines;
 import com.jp.sistema.pedidos.model.entity.Pedidos;
 import com.jp.sistema.pedidos.model.entity.SalesPerson;
 import com.jp.sistema.pedidos.model.entity.customer.Value;
-import com.jp.sistema.pedidos.proxys.ICustomerProxys;
+import com.jp.sistema.pedidos.model.entity.products.Products;
+import com.jp.sistema.pedidos.proxys.ICustomerProxy;
+import com.jp.sistema.pedidos.proxys.IProductProxy;
 
 @Controller
 public class MainController {
@@ -56,11 +59,15 @@ public class MainController {
 	private IDetaPedido detalleDao;
 	
 	@Autowired
-	private ICustomerProxys customerProxy;
+	private ICustomerProxy customerProxy;
+	
+	@Autowired
+	private IProductProxy productProxy;
 	
 	private List<Pedidos> listPedidos =new ArrayList<>();
 	
 	private List<CustomerNew> listCustomerNew = new ArrayList<CustomerNew>();
+	private List<ItemNew> listItemNew = new ArrayList<ItemNew>();
 
 	@GetMapping(value = "/main/{idusuario}")
 	public String main(@PathVariable("idusuario") String idUsuario, Model model) {
@@ -167,13 +174,30 @@ public class MainController {
 	
 	@GetMapping(value = "/items/{idusuario}")
 	public String items(@PathVariable("idusuario") String idUsuario, Model model) {
+		listItemNew.clear();
+		ResponseEntity<Products> getProducts = null;
+		try {
+			getProducts = productProxy.getProducts();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(getProducts != null) {
+			for (com.jp.sistema.pedidos.model.entity.products.Value value : getProducts.getBody().getValue()) {
+				ItemNew item = new ItemNew();
+				item.setNo(value.getNo());
+				item.setDescription(value.getDescription());
+				listItemNew.add(item);
+			}
+		}
 		
 		SalesPerson person = salesPersonDao.searchByOne(idUsuario);
 		model.addAttribute("idusuario", person.getCode().trim());
 		model.addAttribute("usuario", person.getName().trim());
 		
 		model.addAttribute("titulo", "");
-		model.addAttribute("items", itemDao.findAll());
+		model.addAttribute("items", listItemNew);
 		return "items";
 	}	
 	
