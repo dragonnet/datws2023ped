@@ -12,26 +12,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
-import com.jp.sistema.pedidos.model.entity.salesperson.SalesPerson;
-import com.jp.sistema.pedidos.proxys.ISalesPersonProxy;
+import com.jp.sistema.pedidos.model.entity.noserie.NoSerie;
+import com.jp.sistema.pedidos.proxys.INoSerieProxy;
 
 @Service
-public class SalesPersonProxyImpl implements ISalesPersonProxy {
-
+public class NoSerieProxyImpl implements INoSerieProxy {
 	private Gson gson = new Gson();
 	
 	@Autowired
 	private CloseableHttpClient httpClient;
-	
+
 	@Override
-	public ResponseEntity<SalesPerson> getSalesPerson() throws IOException {
-		HttpGet request = new HttpGet("http://20.55.200.64:8048/DynamicsNAV110/ODataV4/Company('Laboratorio%20Pharmalat%2C%20S.A.')/Vendedores");
+	public ResponseEntity<NoSerie> getNoSerie() throws IOException {
+		HttpGet request = new HttpGet("http://20.55.200.64:8048/DynamicsNAV110/ODataV4/Company('Laboratorio%20Pharmalat%2C%20S.A.')/NumeroSerie");
 		request.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
 		HttpResponse response = httpClient.execute(request);
 		String entity = EntityUtils.toString(response.getEntity());
 		String newEntity = entity.replaceAll("@odata.","");
-		SalesPerson salesPerson = gson.fromJson(newEntity, SalesPerson.class);
-		return ResponseEntity.ok(salesPerson);
+		NoSerie noSerie = gson.fromJson(newEntity, NoSerie.class);
+		return ResponseEntity.ok(noSerie);
 	}
 
 }
