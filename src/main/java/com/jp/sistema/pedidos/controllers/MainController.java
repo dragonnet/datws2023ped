@@ -127,14 +127,14 @@ public class MainController {
 			e.printStackTrace();
 		}
 		
-		
+		/*
 		ResponseEntity<com.jp.sistema.pedidos.model.entity.salesperson.SalesPerson> getSalesPerson = null;
 		try {
 			getSalesPerson = salesPersonProxy.getSalesPerson();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 		ResponseEntity<Usuarios> getUsuarios = null;
 		try {
