@@ -87,10 +87,11 @@ public class MainController {
 	private List<SalesPersonNew> listSalesPersonNew = new ArrayList<SalesPersonNew>();
 	private List<NoSerieLinesNew> listNoSeriesLinesNew = new ArrayList<NoSerieLinesNew>();
 	private List<Usuarios> listUsuarios = new ArrayList<Usuarios>();
+	private String codePerson = "";
 
 	@GetMapping(value = "/main/{idusuario}")
 	public String main(@PathVariable("idusuario") String idUsuario, Model model) {
-
+		
 		String personName = searchPerson(listSalesPersonNew, idUsuario);
 		model.addAttribute("idusuario", personName);
 		model.addAttribute("usuario", personName);
@@ -99,8 +100,22 @@ public class MainController {
 		return "main";
 	}
 	
+	private List<CustomerNew> orderListCustomer(List<CustomerNew> listCustomer, String codePerson) {
+		List<CustomerNew> listCustomerOrder = new ArrayList<CustomerNew>(); 
+		for (CustomerNew customerNew : listCustomer) {
+			if(customerNew.getPersonCode().equals(codePerson)) {
+				listCustomerOrder.add(customerNew);
+			}
+		}
+		return listCustomerOrder;
+	}
+
 	@PostMapping(value = "/main")
 	public String postMain(@ModelAttribute Access access, Model model, RedirectAttributes flash) {
+		codePerson = access.getCode();
+		if(!codePerson.isEmpty())
+			listCustomerNew = orderListCustomer(listCustomerNew, codePerson);
+
 		String personName = searchPerson(listSalesPersonNew, access.getPassword());
 		if(personName != null) {
 			model.addAttribute("idusuario", personName);
@@ -127,14 +142,13 @@ public class MainController {
 			e.printStackTrace();
 		}
 		
-		/*
 		ResponseEntity<com.jp.sistema.pedidos.model.entity.salesperson.SalesPerson> getSalesPerson = null;
 		try {
 			getSalesPerson = salesPersonProxy.getSalesPerson();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 		
 		ResponseEntity<Usuarios> getUsuarios = null;
 		try {
@@ -197,6 +211,7 @@ public class MainController {
 				customer.setName(value.getName());
 				customer.setCity(value.getCity());
 				customer.setTimestamp(value.getIdentif1());
+				customer.setPersonCode(value.getSalesperson_Code());
 				listCustomerNew.add(customer);
 			}
 		}
@@ -218,19 +233,19 @@ public class MainController {
 		model.addAttribute("idusuario", personName);
 		model.addAttribute("usuario", personName);
 
-		NoSerieLinesNew noSeriesLine = searchNoSerie(listNoSeriesLinesNew, "PROV-PV");
-		String ultimonumero = noSeriesLine.getLastNoUsed().trim().replace("PV", "");
+		NoSerieLinesNew noSeriesLine = searchNoSerie(listNoSeriesLinesNew, "V-PED-3");
+		String ultimonumero = noSeriesLine.getLastNoUsed().trim().replace("PV-", "");
 		
 		Integer correlativo = Integer.parseInt(ultimonumero);
 		
-		noSeriesLineDao.updateLastNoUsed(String.valueOf(correlativo+1));
+		//noSeriesLineDao.updateLastNoUsed("PV-".concat(String.valueOf(correlativo+1)));
 						
 		Pedidos pedido = new Pedidos(newItem.getNo().trim(),newItem.getDescription().trim(),0.0,0, customerId, String.valueOf(correlativo+1));
 		
 		model.addAttribute("pedido", pedido);
 		model.addAttribute("pedidos", listPedidos);
 		model.addAttribute("customer", searchCustomer(listCustomerNew, customerId));
-		model.addAttribute("nopedido", correlativo+1);
+		model.addAttribute("nopedido", "PV-".concat(String.valueOf(correlativo+1)));
 		return "pedido";
 	}
 	

@@ -11,4 +11,5 @@ public class CustomerNew {
 	private String city;
 	private String contact;
 	private String bloqueado;
+	private String personCode;
 }

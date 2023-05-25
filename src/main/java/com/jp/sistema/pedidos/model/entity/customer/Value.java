@@ -48,7 +48,7 @@ public class Value {
 	@JsonProperty("ExtendTxt7")
 	private String extendTxt7;
 	@JsonProperty("Salesperson_Code")
-	private String salesperson_Code;
+	private String Salesperson_Code;
 	@JsonProperty("Customer_Posting_Group")
 	private String customer_Posting_Group;
 	@JsonProperty("Gen_Bus_Posting_Group")
