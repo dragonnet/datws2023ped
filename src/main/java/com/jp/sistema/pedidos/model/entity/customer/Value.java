@@ -20,15 +20,14 @@ public class Value {
 	private String name_2;
 	@JsonProperty("ExtendTxt6")
 	private String extendTxt6;
-	@JsonProperty("Address")
-	private String address;
+	private String Address;
 	@JsonProperty("Address_2")
-	private String address_2;
+	private String Address_2;
 	private String City;
 	@JsonProperty("Territory_Code")
 	private String territory_Code;
 	@JsonProperty("County")
-	private String county;
+	private String County;
 	@JsonProperty("Customer_principal")
 	private String customer_principal;
 	@JsonProperty("Responsibility_Center")

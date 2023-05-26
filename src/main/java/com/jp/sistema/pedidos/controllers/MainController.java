@@ -35,10 +35,13 @@ import com.jp.sistema.pedidos.model.entity.Pedidos;
 import com.jp.sistema.pedidos.model.entity.SalesPerson;
 import com.jp.sistema.pedidos.model.entity.SalesPersonNew;
 import com.jp.sistema.pedidos.model.entity.customer.Value;
+import com.jp.sistema.pedidos.model.entity.header.Encabezado;
+import com.jp.sistema.pedidos.model.entity.header.Header;
 import com.jp.sistema.pedidos.model.entity.noserie.NoSerie;
 import com.jp.sistema.pedidos.model.entity.products.Products;
 import com.jp.sistema.pedidos.model.entity.usuarios.Usuarios;
 import com.jp.sistema.pedidos.proxys.ICustomerProxy;
+import com.jp.sistema.pedidos.proxys.IHeaderProxy;
 import com.jp.sistema.pedidos.proxys.INoSerieProxy;
 import com.jp.sistema.pedidos.proxys.IProductProxy;
 import com.jp.sistema.pedidos.proxys.ISalesPersonProxy;
@@ -79,6 +82,9 @@ public class MainController {
 	
 	@Autowired
 	private ISalesPersonProxy salesPersonProxy;
+	
+	@Autowired
+	private IHeaderProxy headerProxy;
 	
 	private List<Pedidos> listPedidos =new ArrayList<>();
 	
@@ -212,6 +218,10 @@ public class MainController {
 				customer.setCity(value.getCity());
 				customer.setTimestamp(value.getIdentif1());
 				customer.setPersonCode(value.getSalesperson_Code());
+				customer.setCountry(value.getCounty());
+				customer.setIdentifi(value.getIdentif1());
+				customer.setAddress2(value.getAddress_2());
+				customer.setAddress(value.getAddress());
 				listCustomerNew.add(customer);
 			}
 		}
@@ -414,13 +424,34 @@ public class MainController {
 			Model model,
 			RedirectAttributes flash) {
 		
+		ResponseEntity<Header> responseHeader = null;
+		
+		CustomerNew customer = searchCustomer(listCustomerNew, customerId);
+		
+		
 		if(!idUsuario.contains(".js") && !idUsuario.contains(".png") && !idUsuario.contains(".jpg")) {
-			EncaPedido encabezado = new EncaPedido();
-			encabezado.setNumeroPedido(noPedido);
-			encabezado.setCliente(customerId);
-			encabezado.setVendedor(idUsuario);
 			
-			Integer registro = encabezadoDao.save(encabezado);
+			Encabezado encabezado = new Encabezado();
+			encabezado.setDocument_Type("Order");
+			encabezado.setSell_to_Customer_No(customer.getNo());
+			encabezado.setSell_to_Customer_Name(customer.getName());
+			encabezado.setSubType("FEL-003");
+			encabezado.setIdentify_Type("NIT");
+			encabezado.setIdentify_No(customer.getIdentifi());
+			encabezado.setSell_to_Address(customer.getAddress());
+			encabezado.setSell_to_County(customer.getCountry());
+			encabezado.setSalesperson_Code(customer.getPersonCode());
+			encabezado.setBill_to_Customer_No(customer.getNo());
+			encabezado.setSell_to_Address_2(customer.getAddress2());
+			
+			try {
+				responseHeader = headerProxy.save(encabezado);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			/*
 			
 			if(registro != null) {
 				Integer i = 0;
@@ -434,12 +465,12 @@ public class MainController {
 					detalle.setCantidad(Integer.parseInt(pedidos.getCantidad().toString()));
 					detalleDao.save(detalle);
 				}
-			}
+			}*/
 			String personName = searchPerson(listSalesPersonNew, idUsuario);
 			model.addAttribute("idusuario", personName);
 			model.addAttribute("usuario", personName);
-			model.addAttribute("customer", customerDao.findOne(customerId));
-			flash.addFlashAttribute("success", "Pedido Registrado en el Sistema, con número: " + registro.toString());
+			model.addAttribute("customer", searchCustomer(listCustomerNew, customerId));
+			flash.addFlashAttribute("success", "Pedido Registrado en el Sistema, con número: " + responseHeader.getBody().getNo());
 		}
 		return "redirect:/main/"+idUsuario;
 	}
