@@ -33,4 +33,15 @@ public class CustomerDaoImpl implements ICustomerDao {
 		return query.setParameter(1, id).getSingleResult();
 	}
 
+	@Override
+	public String save(Customer customer) {
+		try {
+			em.persist(customer);
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 }

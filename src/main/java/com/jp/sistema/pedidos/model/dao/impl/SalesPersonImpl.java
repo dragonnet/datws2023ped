@@ -49,4 +49,15 @@ public class SalesPersonImpl implements ISalesPerson {
 			return null;
 		}
 	}
+
+	@Override
+	public String save(SalesPerson salesPerson) {
+		try {
+			em.persist(salesPerson);
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

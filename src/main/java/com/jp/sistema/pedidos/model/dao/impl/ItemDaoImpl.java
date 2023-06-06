@@ -32,4 +32,15 @@ public class ItemDaoImpl implements IItemDao {
 		return query.setParameter(1, id).getSingleResult();
 	}
 
+	@Override
+	public String save(Item item) {
+		try {
+			em.persist(item);
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 }

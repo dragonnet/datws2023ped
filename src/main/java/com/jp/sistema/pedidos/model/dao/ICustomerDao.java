@@ -8,4 +8,6 @@ public interface ICustomerDao {
 	public List<Customer> findAll();
 	
 	public Customer findOne(String id);
+	
+	public String save(Customer customer);
 }

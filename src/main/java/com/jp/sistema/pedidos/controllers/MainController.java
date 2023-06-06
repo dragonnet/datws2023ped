@@ -82,7 +82,7 @@ public class MainController {
 		model.addAttribute("idusuario", person.getCode().trim());
 		model.addAttribute("usuario", person.getName().trim());
 		model.addAttribute("titulo", "");
-		model.addAttribute("customers", listCustomerNew);
+		model.addAttribute("customers", customerDao.findAll());
 		return "main";
 	}
 	
@@ -93,7 +93,7 @@ public class MainController {
 			model.addAttribute("idusuario", person.getCode().trim());
 			model.addAttribute("usuario", person.getName().trim());
 			model.addAttribute("titulo", "");
-			model.addAttribute("customers", listCustomerNew);
+			model.addAttribute("customers", customerDao.findAll());
 			return "main";
 		}else {
 			flash.addFlashAttribute("error", "No es posible validar su acceso, por favor vuela a intentarlo.");

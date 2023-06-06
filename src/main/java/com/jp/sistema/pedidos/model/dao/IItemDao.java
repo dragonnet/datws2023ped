@@ -7,4 +7,5 @@ import com.jp.sistema.pedidos.model.entity.Item;
 public interface IItemDao {
 	public List<Item> findAll();
 	public Item findByOne(String id);
+	public String save(Item item);
 }
