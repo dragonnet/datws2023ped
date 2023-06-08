@@ -141,7 +141,7 @@ public class MainController {
 		Access access = new Access();
 		model.addAttribute("access", access);
 		model.addAttribute("titulo", "");
-		systemProxy.setDataBase();//Please debug this line and validate the data in database.
+		systemProxy.setDataBase();//Please debug this line and validate the data in database. And run once time and comment this line.
 		return "access";
 	}
 	
