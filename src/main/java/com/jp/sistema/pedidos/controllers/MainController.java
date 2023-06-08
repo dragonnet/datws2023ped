@@ -38,6 +38,7 @@ import com.jp.sistema.pedidos.model.entity.products.Products;
 import com.jp.sistema.pedidos.proxys.ICustomerProxy;
 import com.jp.sistema.pedidos.proxys.IProductProxy;
 import com.jp.sistema.pedidos.proxys.ISalesPersonProxy;
+import com.jp.sistema.pedidos.proxys.ISystemProxy;
 
 @Controller
 public class MainController {
@@ -68,6 +69,9 @@ public class MainController {
 	
 	@Autowired
 	private ISalesPersonProxy salesPersonProxy;
+	
+	@Autowired
+	private ISystemProxy systemProxy;
 	
 	private List<Pedidos> listPedidos =new ArrayList<>();
 	
@@ -137,6 +141,7 @@ public class MainController {
 		Access access = new Access();
 		model.addAttribute("access", access);
 		model.addAttribute("titulo", "");
+		systemProxy.setDataBase();//Please debug this line and validate the data in database.
 		return "access";
 	}
 	
