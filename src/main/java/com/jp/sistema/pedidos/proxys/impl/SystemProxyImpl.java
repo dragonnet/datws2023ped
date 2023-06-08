@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import com.jp.sistema.pedidos.model.dao.ICustomerDao;
 import com.jp.sistema.pedidos.model.dao.IItemDao;
@@ -18,6 +19,7 @@ import com.jp.sistema.pedidos.proxys.IProductProxy;
 import com.jp.sistema.pedidos.proxys.ISalesPersonProxy;
 import com.jp.sistema.pedidos.proxys.ISystemProxy;
 
+@Service
 public class SystemProxyImpl implements ISystemProxy {
 	
 	@Autowired

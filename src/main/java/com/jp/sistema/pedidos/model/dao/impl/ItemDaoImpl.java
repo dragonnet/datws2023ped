@@ -13,6 +13,7 @@ import com.jp.sistema.pedidos.model.dao.IItemDao;
 import com.jp.sistema.pedidos.model.entity.Item;
 
 @Repository
+@Transactional
 public class ItemDaoImpl implements IItemDao {
 	
 	@PersistenceContext

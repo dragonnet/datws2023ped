@@ -13,6 +13,7 @@ import com.jp.sistema.pedidos.model.dao.ICustomerDao;
 import com.jp.sistema.pedidos.model.entity.Customer;
 
 @Repository
+@Transactional
 public class CustomerDaoImpl implements ICustomerDao {
 	
 	@PersistenceContext

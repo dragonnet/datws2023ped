@@ -14,6 +14,7 @@ import com.jp.sistema.pedidos.model.entity.SalesPerson;
 
 
 @Repository
+@Transactional
 public class SalesPersonImpl implements ISalesPerson {
 	@PersistenceContext
 	private EntityManager em;
